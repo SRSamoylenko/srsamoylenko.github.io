@@ -1,0 +1,93 @@
+@startuml
+!theme materia-outline
+title "Архитектура решения онлайн-кинотеатра (As Is)"
+actor Администратор as ClientAdmin
+actor "Пользователь онлайн-кинотеатра" as Client
+actor "Системный аналитик" as SystemAnalyst
+
+
+
+package AdminPanel {
+  component AdminNginx
+  component DjangoAdminApp
+  AdminNginx -> DjangoAdminApp
+}
+
+note right of AdminPanel
+Сервис для загрузки
+контента администраторами
+end note
+
+package MoviesETL {
+  component MoviesETLApp
+}
+
+note bottom of MoviesETL
+ETL-процесс для нормализации
+и загрузки данных,
+заполненных администраторами
+end note
+
+package AsyncMoviesApi {
+  database ElasticSearch
+  component FastApiApp
+  database AsyncApiRedis
+  component AsyncApiNginx
+  component Kibana
+
+  Kibana -right-> ElasticSearch
+  FastApiApp -up-> AsyncApiRedis: Кэширование\n ответов ручек
+  FastApiApp -up-> ElasticSearch: Чтение данных (контент)
+
+  AsyncApiNginx -> FastApiApp
+}
+
+note bottom of AsyncMoviesApi
+REST-FULL сервис для
+получения контента
+клиентом
+end note
+
+package AuthService {
+  component FlaskApp
+  database AuthRedis
+  database AuthPostgres
+  component AuthNginx
+  package Jaeger
+  FlaskApp -up-> AuthPostgres: "Запись и чтение \n данных о пользователях"
+  FlaskApp -up-> AuthRedis: "Хранение токенов"
+  FlaskApp -up-> Jaeger: "Логирование"
+  AuthNginx -right-> FlaskApp
+}
+
+note bottom of AuthService
+Сервис для регистраии,
+аутентификации и авторизации
+end note
+
+package LoadBalancer {
+component balancer
+}
+
+note right of LoadBalancer
+Балансировщик запросов
+end note
+
+database MoviesPostgres
+
+DjangoAdminApp -up-> MoviesPostgres : "Запись данных\n о фильмах"
+
+MoviesETLApp -up-> MoviesPostgres : "Считывание данных\n о фильмах"
+MoviesETLApp -down-> ElasticSearch : "Запись\n нормализованных данных"
+
+FastApiApp -right-> AuthNginx: "Авторизация"
+
+LoadBalancer -up-> AsyncApiNginx: Просмотр контента
+LoadBalancer -up-> AuthNginx: Регистрация,\n аутентификация,\n получение подписки
+
+Client -up-> LoadBalancer
+SystemAnalyst -down-> Kibana: "Мониторинг контента и объема данных"
+SystemAnalyst -down-> Jaeger: "Просмотр логов"
+ClientAdmin -down-> AdminNginx : "Администрирование\n контента"
+
+@enduml
