@@ -61,7 +61,7 @@ package AuthService {
 }
 
 note bottom of AuthService
-Сервис для регистраии,
+Сервис для регистрации,
 аутентификации и авторизации
 end note
 
