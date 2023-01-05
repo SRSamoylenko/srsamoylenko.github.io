@@ -82,8 +82,8 @@ package BigData {
 }
 
 
-    BigDataEtl -left-> Kafka: "Считывание событий"
-    BigDataEtl -down-> ClickHouseCluster: "Нормализация данных"
+    BigDataEtl ..> ClickHouseCluster: "Настройка соединения для \nполучения данных из Kafka"
+    Kafka -down-> ClickHouseCluster: "Считывание событий"
 }
 note bottom of BigData
 Сервис для сбора
