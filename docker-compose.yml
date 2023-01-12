@@ -45,6 +45,11 @@ services:
     image: confluentinc/cp-server:7.3.0
     depends_on:
       - zookeeper_kf
+    networks:
+      default:
+      movies-private:
+        aliases:
+          - ugc.kafka.private
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper_kf:2181'
@@ -186,3 +191,7 @@ services:
       - clickhouse-node1
     env_file:
       - ./etl/.env.sample
+
+networks:
+  movies-private:
+    external: true
