@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  broker:
+    ports:
+      - 9092:9092
+      - 9101:9101
+
+  control-center:
+    ports:
+      - 9021:9021
+
+  clickhouse-node1:
+    ports:
+      - 8123:8123
+      - 9000:9000

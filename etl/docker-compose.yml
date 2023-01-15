@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  etl_ugc:
+    build: .
+    environment:
+      - CLICKHOUSE_CLUSTER
+      - CLICKHOUSE_HOST
+      - CLICKHOUSE_PORT
+      - CLICKHOUSE_PORT_HTTP
+      - CLICKHOUSE_DB
+      - KAFKA_HOST
+      - KAFKA_PORT
+      - KAFKA_TOPIC
+      - KAFKA_CONSUMER_GROUP
+    networks:
+      - ugc
+
+networks:
+  ugc:
+    name: ugc
+    external: true
