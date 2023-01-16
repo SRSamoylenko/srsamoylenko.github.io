@@ -200,6 +200,19 @@ services:
       - KAFKA_TOPIC
       - KAFKA_CONSUMER_GROUP
 
+  kafka_producer:
+    build: 'kafka_producer'
+    environment:
+      - PORT_APP
+      - WORKERS
+      - THREADS
+      - KAFKA_HOST
+      - KAFKA_PORT
+      - KAFKA_TOPIC
+      - LOGGING_LEVEL
+    depends_on:
+      - broker
+
 networks:
   movies-private:
     external: true
