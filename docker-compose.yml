@@ -45,11 +45,6 @@ services:
     image: confluentinc/cp-server:7.3.0
     depends_on:
       - zookeeper_kf
-    networks:
-      default:
-      movies-private:
-        aliases:
-          - ugc.kafka.private
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper_kf:2181'
@@ -200,19 +195,34 @@ services:
       - KAFKA_TOPIC
       - KAFKA_CONSUMER_GROUP
 
-  kafka_producer:
-    build: 'kafka_producer'
+  api:
+    build: ./api
     environment:
-      - PORT_APP
-      - WORKERS
-      - THREADS
+      - API_WORKERS
+      - API_THREADS
+      - API_LOGGING_LEVEL
       - KAFKA_HOST
       - KAFKA_PORT
       - KAFKA_TOPIC
-      - LOGGING_LEVEL
     depends_on:
       - broker
 
+  nginx:
+    image: nginx:1
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - api
+    labels:
+      - traefik.enable=true
+      - traefik.constraint-label=traefik-public
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.api.entrypoints=web
+      - traefik.http.routers.api.rule=Host(`ugc.localhost`)
+    networks:
+      - default
+      - traefik-public
+
 networks:
-  movies-private:
+  traefik-public:
     external: true

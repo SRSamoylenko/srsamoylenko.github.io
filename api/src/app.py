@@ -28,9 +28,9 @@ async def write_timestamp():
     )
     try:
         params = RequestParams(
-            user_id=request.args.get(USER_ID),
-            movie_id=request.args.get(MOVIE_ID),
-            timestamp=request.args.get(TIMESTAMP),
+            user_id=request.json.get(USER_ID),
+            movie_id=request.json.get(MOVIE_ID),
+            timestamp=request.json.get(TIMESTAMP),
         )
     except ValidationError as exception:
         return (
@@ -42,12 +42,10 @@ async def write_timestamp():
     try:
         await producer.send(
             settings.kafka_topic,
-            value=str(params.timestamp).encode(),
+            value=params.json().encode(),
             key=f"{params.user_id}+{params.movie_id}".encode(),
         )
     finally:
         await producer.stop()
 
-
-if __name__ == '__main__':
-    app.run()
+    return {"status": "success"}, HTTPStatus.CREATED
