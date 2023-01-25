@@ -41,7 +41,7 @@ def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("test_name", choices=["all", *TESTS.keys()])
     parser.add_argument("-i", "--iterations", type=int, default=ITERATIONS)
-    parser.add_argument("-l", "--loaded", action="store_true")
+    parser.add_argument("-l", "--load", type=int, default=0)
     return parser
 
 
@@ -73,4 +73,4 @@ if __name__ == "__main__":
             results.append(result)
 
         mean, rmse = calculate_rmse(results)
-        write_results(test_name, mean, rmse, args.loaded)
+        write_results(test_name, mean, rmse, args.load)

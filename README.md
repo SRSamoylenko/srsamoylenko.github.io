@@ -4,3 +4,6 @@
 # Kafka to Clickhouse ETL
 
 [Документация по стеку](etl/README.md)
+
+# Тесты БД
+[Описание тестов](test_db/README.md)

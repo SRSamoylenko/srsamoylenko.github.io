@@ -18,9 +18,9 @@ def write_results(
     test_name: str,
     mean: float,
     rmse: float,
-    loaded: bool = False,
+    load: int = 0,
 ) -> None:
-    filename = test_name if not loaded else test_name + "_loaded"
+    filename = test_name if not load else test_name + f"_{load}_rps"
     with open(f"results/{filename}.json", "w") as fp:
         json.dump({"mean": mean, "rmse": rmse}, fp)
 

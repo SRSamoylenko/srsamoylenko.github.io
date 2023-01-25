@@ -19,7 +19,7 @@ def create_tables(cfg):
     client.execute(
         """
     CREATE TABLE IF NOT EXISTS {db}.views ON CLUSTER {cluster}
-    ({columns}) ENGINE = MergeTree ORDER BY user_id
+    ({columns}) ENGINE = MergeTree() ORDER BY (user_id, movie_id)
     """.format(
             **{
                 "db": cfg.CLICKHOUSE_DB,

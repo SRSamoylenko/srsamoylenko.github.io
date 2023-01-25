@@ -18,7 +18,7 @@ def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--size", type=int, default=BATCH_SIZE)
     parser.add_argument("-i", "--iterations", type=int, default=ITERATIONS)
-    parser.add_argument("-l", "--loaded", action="store_true")
+    parser.add_argument("-l", "--load", type=int, default=0)
     return parser
 
 
@@ -48,4 +48,4 @@ if __name__ == "__main__":
         results.append(exec_time)
 
     mean, rmse = calculate_rmse(results)
-    write_results(f"insert_batch_{args.size}", mean, rmse, args.loaded)
+    write_results(f"insert_batch_{args.size}", mean, rmse, args.load)
