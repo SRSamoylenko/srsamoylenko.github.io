@@ -1,0 +1,8 @@
+version: '3.5'
+
+services:
+  clickhouse:
+    image: yandex/clickhouse-server:20.4
+    ports:
+      - "8123:8123"
+      - "9000:9000"
