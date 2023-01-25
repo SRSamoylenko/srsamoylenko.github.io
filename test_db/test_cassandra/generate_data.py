@@ -1,22 +1,22 @@
 import json
-from uuid import uuid4
 import random
+from uuid import uuid4
 
-from cassandra.cluster import Cluster, BatchStatement, ConsistencyLevel
 import tqdm
+from cassandra.cluster import BatchStatement, Cluster, ConsistencyLevel
 
-KEYSPACE = 'movies'
+KEYSPACE = "movies"
 BATCH_SIZE = 200
 BATCH_NUMBER = 50000
 
 
-def load_ids(filename: str = 'ids.json') -> tuple[list[str], list[str]]:
-    with open(filename, 'r') as fp:
+def load_ids(filename: str = "ids.json") -> tuple[list[str], list[str]]:
+    with open(filename, "r") as fp:
         ids_values = json.load(fp)
-    return ids_values.get('user_ids', {}), ids_values.get('movie_ids', {})
+    return ids_values.get("user_ids", {}), ids_values.get("movie_ids", {})
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     user_ids, movie_ids = load_ids()
 
     cluster = Cluster()
@@ -39,6 +39,6 @@ if __name__ == '__main__':
                     random.choice(user_ids),
                     random.choice(movie_ids),
                     random.randint(0, 100000),
-                )
+                ),
             )
         session.execute(batch)
