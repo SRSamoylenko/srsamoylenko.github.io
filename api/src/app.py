@@ -4,9 +4,7 @@ from uuid import UUID
 from aiokafka import AIOKafkaProducer
 from flask import Flask, request
 from pydantic import BaseModel, ValidationError
-
 from settings import settings
-
 
 USER_ID = "user_id"
 MOVIE_ID = "movie_id"
