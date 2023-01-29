@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from typing import Tuple
 from uuid import UUID
 
 from aiokafka import AIOKafkaProducer
@@ -21,15 +22,23 @@ class RequestParams(BaseModel):
 
 
 @app.route("/write-timestamp", methods=["POST"])
-async def write_timestamp():
+async def write_timestamp() -> Tuple[dict, int]:
     producer = AIOKafkaProducer(
         bootstrap_servers=f"{settings.kafka_host}:{settings.kafka_port}",
     )
+
+    json_data = request.json
+    if not json_data:
+        return (
+            {"details": "No json data provided"},
+            HTTPStatus.BAD_REQUEST,
+        )
+
     try:
         params = RequestParams(
-            user_id=request.json.get(USER_ID),
-            movie_id=request.json.get(MOVIE_ID),
-            timestamp=request.json.get(TIMESTAMP),
+            user_id=json_data.get(USER_ID),
+            movie_id=json_data.get(MOVIE_ID),
+            timestamp=json_data.get(TIMESTAMP),
         )
     except ValidationError as exception:
         return (
