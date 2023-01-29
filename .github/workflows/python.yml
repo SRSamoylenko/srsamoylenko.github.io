@@ -28,13 +28,13 @@ jobs:
           pip install flake8 flake8-html mypy pytest-html
 
       - name: Lint with flake8
-        run: flake8 . --format=html --htmldir=./report
+        run: flake8 . --format=html --htmldir=./lint-report
 
       - name: Deploy lint report page
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./report
+          publish_dir: ./lint-report
           destination_dir: lint/python${{ matrix.version }}
 
       - name: Lint with mypy
@@ -43,13 +43,13 @@ jobs:
 
       - name: Run tests
         working-directory: ./api
-        run: python -m pytest --html=report/index.html --self-contained-html
+        run: python -m pytest --html=test-report/index.html --self-contained-html
         
       - name: Deploy test report page
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./api/report
+          publish_dir: ./api/test-report
           destination_dir: test/python${{ matrix.version }}
 
       - name: Send message
