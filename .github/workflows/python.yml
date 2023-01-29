@@ -2,7 +2,7 @@ name: UGC stuff
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   lint_test:
