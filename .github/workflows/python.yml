@@ -61,4 +61,4 @@ jobs:
           pip install pytest pytest-mock
 
       - name: Run tests
-        run: PYTHONPATH="${PYTHONPATH}:./"; ls; env; python -m pytest
+        run: cd api && python -m pytest
