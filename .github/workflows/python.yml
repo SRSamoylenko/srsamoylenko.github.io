@@ -33,7 +33,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./report
-          destination_dir: lint
+          # destination_dir: lint
 
       # - name: Send message
       #   uses: appleboy/telegram-action@master
@@ -41,7 +41,7 @@ jobs:
       #     to: ${{ secrets.TELEGRAM_TO }}
       #     token: ${{ secrets.TELEGRAM_TOKEN }}
       #     message: |
-      #       ${{ github.workflow }} linter report - https://srsamoylenko.github.io/ugc_sprint_1/lint
+      #       ${{ github.workflow }} linter report - https://srsamoylenko.github.io/ugc_sprint_1/
   
   test:
     runs-on: ubuntu-latest
@@ -67,14 +67,15 @@ jobs:
         working-directory: ./api
         run: |
           mkdir report
-          python -m pytest --html=report/index.html --self-contained-html
+          python -m pytest --html=report/test-report.html --self-contained-html
+          ls report
         
       - name: Deploy test report page
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./report
-          destination_dir: test
+          # destination_dir: test
 
       # - name: Send message
       #   uses: appleboy/telegram-action@master
@@ -82,4 +83,4 @@ jobs:
       #     to: ${{ secrets.TELEGRAM_TO }}
       #     token: ${{ secrets.TELEGRAM_TOKEN }}
       #     message: |
-      #       ${{ github.workflow }} test report - https://srsamoylenko.github.io/ugc_sprint_1/test
+      #       ${{ github.workflow }} test report - https://srsamoylenko.github.io/ugc_sprint_1/test-report.html
