@@ -68,7 +68,7 @@ jobs:
         run: |
           mkdir report
           python -m pytest --html=report/test-report.html --self-contained-html
-          ls report
+          cat report report/test-report.html
         
       - name: Deploy test report page
         uses: peaceiris/actions-gh-pages@v3
