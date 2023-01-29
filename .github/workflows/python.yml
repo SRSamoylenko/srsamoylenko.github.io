@@ -55,13 +55,12 @@ jobs:
         with:
           python-version: ${{ matrix.version }}
 
-      - name: Change working dir
-        run: cd api
-
       - name: Install dependencies
+        working-directory: ./api
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run tests
+        working-directory: ./api
         run: python -m pytest
