@@ -40,7 +40,7 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            See ${{ github.workflow }} [linter report](https://srsamoylenko.github.io/ugc_sprint_1)
+            ${{ github.workflow }} linter report - https://srsamoylenko.github.io/ugc_sprint_1
   
   test:
     runs-on: ubuntu-latest
