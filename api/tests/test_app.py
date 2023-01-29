@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock
+from mock import AsyncMock
 
 
 def test_write_timestamp(client, mocker):
