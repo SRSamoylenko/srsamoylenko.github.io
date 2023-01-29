@@ -26,14 +26,14 @@ jobs:
           pip install flake8 flake8-html
 
       - name: Lint with flake8
-        run: flake8 . --format=html --htmldir=./report/python${{ matrix.version }}
+        run: flake8 . --format=html --htmldir=./report
 
       - name: Deploy lint report page
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./report
-          destination_dir: lint
+          destination_dir: lint/python${{ matrix.version }}
 
       # - name: Send message
       #   uses: appleboy/telegram-action@master
@@ -65,14 +65,14 @@ jobs:
 
       - name: Run tests
         working-directory: ./api
-        run: python -m pytest --html=report/python${{ matrix.version }}/index.html --self-contained-html
+        run: python -m pytest --html=report/index.html --self-contained-html
         
       - name: Deploy test report page
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./api/report
-          destination_dir: test
+          destination_dir: test/python${{ matrix.version }}
 
       # - name: Send message
       #   uses: appleboy/telegram-action@master
