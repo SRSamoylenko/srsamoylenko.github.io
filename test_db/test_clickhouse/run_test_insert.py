@@ -31,7 +31,6 @@ if __name__ == "__main__":
     user_ids = select_user_ids(client)
     movie_ids = select_movie_ids(client)
 
-    client = Client(host="localhost")
     results = []
     for _ in tqdm.tqdm(range(args.iterations)):
         values = [

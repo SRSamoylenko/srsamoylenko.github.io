@@ -3,8 +3,7 @@ import random
 from time import sleep
 
 from clickhouse_driver import Client
-from common import (calculate_rmse, select_movie_ids, select_user_ids,
-                    write_results)
+from common import select_movie_ids, select_user_ids
 
 BATCH_SIZE = 100
 DELAY = 0
@@ -29,7 +28,6 @@ if __name__ == "__main__":
     user_ids = select_user_ids(client)
     movie_ids = select_movie_ids(client)
 
-    client = Client(host="localhost")
     while True:
         values = [
             {

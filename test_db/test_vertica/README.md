@@ -11,7 +11,7 @@ python3.10 -m venv venv
 ```commandline
 pip install -r requirements.txt
 ```
-3. Запустите кластер ClickHouse:
+3. Запустите кластер Vertica:
 ```commandline
 docker-compose up -d
 ```
@@ -22,10 +22,11 @@ python migrate.py
 Схема таблицы в БД:
 ```sql
 CREATE TABLE test.stats (
-    user_id UUID, 
-    movie_id UUID, 
-    timestamp UInt32
-) Engine=MergeTree() ORDER BY (user_id, movie_id)
+    user_id UUID NOT NULL,
+    movie_id UUID NOT NULL,
+    timestamp INTEGER NOT NULL
+)
+ORDER BY user_id, movie_id;
 ```
 5. Далее можно запускать тесты. Команда запуска всех тестов на чтение:
 ```commandline
@@ -42,25 +43,25 @@ GROUP BY movie_id
 ```sql
 SELECT MAX (timestamp) 
 FROM test.stats 
-WHERE movie_id = %(movie_id)s 
-AND user_id = %(user_id)s
+WHERE movie_id = :movie_id
+AND user_id = :user_id
 ```
 - `select_max_timestamps_by_user` - достать timestamp-ы, на которых остановился пользователь для всех фильмов
 ```sql
 SELECT movie_id, max(timestamp) 
 FROM test.stats 
-WHERE user_id = %(user_id)s 
+WHERE user_id = :user_id
 GROUP BY movie_id
 ```
 - `select_movies_by_user` - достать id фильмов, которые просматривал пользователь
 ```sql
 SELECT DISTINCT (movie_id) 
 FROM test.stats 
-WHERE user_id = %(user_id)s
+WHERE user_id = :user_id
 ```
 - `select_users_by_movie` - достать id пользователей, которые просматривали фильм
 ```sql
-SELECT DISTINCT (user_id) FROM test.stats WHERE movie_id = %(movie_id)s
+SELECT DISTINCT (user_id) FROM test.stats WHERE movie_id = :movie_id
 ```
 
 Опциональные аргументы:
