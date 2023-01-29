@@ -35,13 +35,13 @@ jobs:
           publish_dir: ./report
           destination_dir: lint
 
-      - name: Send message
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            ${{ github.workflow }} linter report - https://srsamoylenko.github.io/ugc_sprint_1/lint
+      # - name: Send message
+      #   uses: appleboy/telegram-action@master
+      #   with:
+      #     to: ${{ secrets.TELEGRAM_TO }}
+      #     token: ${{ secrets.TELEGRAM_TOKEN }}
+      #     message: |
+      #       ${{ github.workflow }} linter report - https://srsamoylenko.github.io/ugc_sprint_1/lint
   
   test:
     runs-on: ubuntu-latest
@@ -65,19 +65,21 @@ jobs:
 
       - name: Run tests
         working-directory: ./api
-        run: python -m pytest --html=report/index.html --self-contained-html
+        run: |
+          mkdir report
+          python -m pytest --html=report/index.html --self-contained-html
         
-      - name: Deploy lint report page
+      - name: Deploy test report page
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./report
           destination_dir: test
 
-      - name: Send message
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            ${{ github.workflow }} test report - https://srsamoylenko.github.io/ugc_sprint_1/test
+      # - name: Send message
+      #   uses: appleboy/telegram-action@master
+      #   with:
+      #     to: ${{ secrets.TELEGRAM_TO }}
+      #     token: ${{ secrets.TELEGRAM_TOKEN }}
+      #     message: |
+      #       ${{ github.workflow }} test report - https://srsamoylenko.github.io/ugc_sprint_1/test
