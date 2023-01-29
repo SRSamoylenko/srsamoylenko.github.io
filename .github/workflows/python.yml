@@ -1,8 +1,6 @@
 name: UGC stuff
 
 on:
-  push:
-    branches: [ master, ci ]
   pull_request:
     branches: [ master ]
 
