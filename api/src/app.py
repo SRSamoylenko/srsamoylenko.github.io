@@ -1,10 +1,15 @@
 from http import HTTPStatus
 from typing import Tuple
 from uuid import UUID
+import logging
 
+import sentry_sdk
 from aiokafka import AIOKafkaProducer
 from flask import Flask, request
 from pydantic import BaseModel, ValidationError
+from sentry_sdk.integrations.flask import FlaskIntegration
+
+import logstash
 
 from .settings import settings
 
@@ -12,7 +17,22 @@ USER_ID = "user_id"
 MOVIE_ID = "movie_id"
 TIMESTAMP = "ts"
 
+sentry_sdk.init(
+    dsn=settings.sentry_dsn,
+    integrations=[
+        FlaskIntegration(),
+    ],
+    traces_sample_rate=1.0,
+)
+
 app = Flask(__name__)
+logger = logging.getLogger(settings.logger_name)
+app.logger = logger
+app.logger.setLevel(logging.INFO)
+logstash_handler = logstash.LogstashHandler(
+    settings.logstash_host, settings.logstash_port, version=1
+)
+app.logger.addHandler(logstash_handler)
 
 
 class RequestParams(BaseModel):

@@ -1,6 +1,5 @@
 version: '3.9'
 
-name: moviesugc
 services:
   # clickhouse
   zookeeper:
@@ -206,6 +205,10 @@ services:
       - KAFKA_TOPIC
     depends_on:
       - broker
+    networks:
+      - default
+      - traefik-public
+      - movies-private
 
   nginx:
     image: nginx:1
@@ -225,4 +228,6 @@ services:
 
 networks:
   traefik-public:
+    external: true
+  movies-private:
     external: true
