@@ -15,3 +15,5 @@ typing_extensions==4.4.0
 Werkzeug==2.2.2
 zope.event==4.6
 zope.interface==5.5.2
+python-logstash==0.4.8
+sentry-sdk[flask]
