@@ -19,6 +19,11 @@ docker-compose up -d
 ```commandline
 python migrate.py
 ```
+и сгенерируйте тестовые данные
+```
+python generate_data.py
+```
+
 Схема таблицы в БД:
 ```sql
 CREATE TABLE test.stats (
