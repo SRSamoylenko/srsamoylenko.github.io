@@ -2,8 +2,13 @@ import argparse
 import random
 
 import vertica_python
-from common import (calculate_rmse, measure_exec_time, select_movie_ids,
-                    select_user_ids, write_results)
+from common import (
+    calculate_rmse,
+    measure_exec_time,
+    select_movie_ids,
+    select_user_ids,
+    write_results,
+)
 from config import CONNECTION_INFO
 from tqdm import tqdm
 
@@ -11,25 +16,25 @@ ITERATIONS = 200
 
 TESTS = {
     "select_average_timestamps": """
-        SELECT movie_id, AVG(timestamp) 
-        FROM test.stats 
+        SELECT movie_id, AVG(timestamp)
+        FROM test.stats
         GROUP BY movie_id
     """,
     "select_max_timestamp_by_user_movie": """
-        SELECT MAX (timestamp) 
-        FROM test.stats 
+        SELECT MAX (timestamp)
+        FROM test.stats
         WHERE movie_id = :movie_id
         AND user_id = :user_id
     """,
     "select_max_timestamps_by_user": """
-        SELECT movie_id, max(timestamp) 
-        FROM test.stats 
+        SELECT movie_id, max(timestamp)
+        FROM test.stats
         WHERE user_id = :user_id
         GROUP BY movie_id
     """,
     "select_movies_by_user": """
-        SELECT DISTINCT (movie_id) 
-        FROM test.stats 
+        SELECT DISTINCT (movie_id)
+        FROM test.stats
         WHERE user_id = :user_id
     """,
     "select_users_by_movie": """
@@ -51,7 +56,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.test_name == "all":
-        tests_names = TESTS.keys()
+        tests_names = list(TESTS.keys())
     else:
         tests_names = [args.test_name]
 

@@ -40,7 +40,10 @@ if __name__ == "__main__":
                 for _ in range(args.size)
             ]
             cursor.executemany(
-                "INSERT INTO test.stats (user_id, movie_id, timestamp) VALUES (?, ?, ?)",
+                (
+                    "INSERT INTO test.stats (user_id, movie_id, timestamp)"
+                    "VALUES (?, ?, ?)"
+                ),
                 values,
                 use_prepared_statements=True,
             )

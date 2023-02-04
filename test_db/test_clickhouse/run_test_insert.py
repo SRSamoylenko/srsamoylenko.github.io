@@ -4,8 +4,12 @@ import time
 
 import tqdm
 from clickhouse_driver import Client
-from common import (calculate_rmse, select_movie_ids, select_user_ids,
-                    write_results)
+from common import (
+    calculate_rmse,
+    select_movie_ids,
+    select_user_ids,
+    write_results,
+)
 
 BATCH_SIZE = 1000
 ITERATIONS = 100

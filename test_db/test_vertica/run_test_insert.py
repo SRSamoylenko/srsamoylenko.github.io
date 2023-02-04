@@ -4,8 +4,12 @@ import time
 
 import tqdm
 import vertica_python
-from common import (calculate_rmse, select_movie_ids, select_user_ids,
-                    write_results)
+from common import (
+    calculate_rmse,
+    select_movie_ids,
+    select_user_ids,
+    write_results,
+)
 from config import CONNECTION_INFO
 
 BATCH_SIZE = 1000

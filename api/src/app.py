@@ -1,15 +1,14 @@
+import logging
 from http import HTTPStatus
 from typing import Tuple
 from uuid import UUID
-import logging
 
+import logstash
 import sentry_sdk
 from aiokafka import AIOKafkaProducer
 from flask import Flask, request
 from pydantic import BaseModel, ValidationError
 from sentry_sdk.integrations.flask import FlaskIntegration
-
-import logstash
 
 from .settings import settings
 
