@@ -1,12 +1,10 @@
 import argparse
 import random
 
+from common import calculate_rmse, load_ids, write_results
 from pymongo import MongoClient
-from tqdm import tqdm
-
-from common import load_ids, calculate_rmse, write_results
 from test_cases import TEST_CASES, get_test
-
+from tqdm import tqdm
 
 ITERATIONS = 100
 
@@ -29,7 +27,7 @@ if __name__ == "__main__":
     db = client.test
 
     if args.test_name == "all":
-        tests_names = TEST_CASES.keys()
+        tests_names = list(TEST_CASES.keys())
     else:
         tests_names = [args.test_name]
 
@@ -41,8 +39,9 @@ if __name__ == "__main__":
             test_case.measure_exec_time(
                 db=db,
                 user_id=random.choice(user_ids),
-                movie_id=random.choice(movie_ids)
-            ) for _ in tqdm(range(args.iterations))
+                movie_id=random.choice(movie_ids),
+            )
+            for _ in tqdm(range(args.iterations))
         ]
 
         mean, rmse = calculate_rmse(results)

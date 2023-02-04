@@ -1,9 +1,7 @@
 import random
 
-from pymongo import MongoClient
-
 from common import load_ids
-
+from pymongo import MongoClient
 
 if __name__ == "__main__":
     client = MongoClient()
@@ -14,8 +12,10 @@ if __name__ == "__main__":
     estimations = db.estimations
 
     while True:
-        estimations.insert_one({
-            'user_id': random.choice(user_ids),
-            'movie_id': random.choice(movie_ids),
-            'estimation': random.randint(0, 10),
-        })
+        estimations.insert_one(
+            {
+                "user_id": random.choice(user_ids),
+                "movie_id": random.choice(movie_ids),
+                "estimation": random.randint(0, 10),
+            }
+        )
