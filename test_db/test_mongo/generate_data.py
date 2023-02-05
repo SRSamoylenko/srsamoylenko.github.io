@@ -2,9 +2,10 @@ import argparse
 import random
 from uuid import uuid4
 
+import pymongo
 import tqdm
 from common import write_ids
-from pymongo import MongoClient
+from settings import settings
 
 BATCH_SIZE = 10000
 USERS_NUMBER = 1000
@@ -41,10 +42,19 @@ if __name__ == "__main__":
     movie_ids = [str(uuid4()) for _ in range(args.movies)]
     write_ids(user_ids, movie_ids)
 
-    client = MongoClient()
+    client = pymongo.MongoClient(
+        username=settings.mongo_username,
+        password=settings.mongo_password,
+    )
     db = client.test
 
     estimations = db.estimations
+    estimations.create_index(
+        [("user_id", pymongo.DESCENDING), ("estimation", pymongo.DESCENDING)]
+    )
+    estimations.create_index(
+        [("movie_id", pymongo.DESCENDING), ("estimation", pymongo.DESCENDING)]
+    )
     for _ in tqdm.tqdm(range(args.estimations)):
         new_estimations = [
             {
@@ -57,6 +67,7 @@ if __name__ == "__main__":
         estimations.insert_many(new_estimations)
 
     postponed = db.postponed
+    postponed.create_index("user_id")
     for _ in tqdm.tqdm(range(args.postponed)):
         new_postponed = [
             {

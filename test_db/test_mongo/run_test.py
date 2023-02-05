@@ -3,6 +3,7 @@ import random
 
 from common import calculate_rmse, load_ids, write_results
 from pymongo import MongoClient
+from settings import settings
 from test_cases import TEST_CASES, get_test
 from tqdm import tqdm
 
@@ -23,7 +24,10 @@ if __name__ == "__main__":
 
     user_ids, movie_ids = load_ids()
 
-    client = MongoClient()
+    client = MongoClient(
+        username=settings.mongo_username,
+        password=settings.mongo_password,
+    )
     db = client.test
 
     if args.test_name == "all":
