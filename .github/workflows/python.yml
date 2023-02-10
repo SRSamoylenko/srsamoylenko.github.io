@@ -63,4 +63,4 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             Lint checks and tests passed for ${{ github.workflow }}
-            Reports: https://srsamoylenko.github.io/ugc_sprint_1/
+            Reports: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
