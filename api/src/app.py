@@ -23,7 +23,7 @@ if settings.sentry_dsn:
         integrations=[
             FlaskIntegration(),
         ],
-        traces_sample_rate=1.0,
+        traces_sample_rate=settings.sentry_traces_sample_rate,
     )
 
 app = Flask(__name__)
