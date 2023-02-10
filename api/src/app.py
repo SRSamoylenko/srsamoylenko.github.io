@@ -4,11 +4,9 @@ from typing import Tuple
 from uuid import UUID
 
 import logstash
-import sentry_sdk
 from aiokafka import AIOKafkaProducer
 from flask import Flask, request
 from pydantic import BaseModel, ValidationError
-from sentry_sdk.integrations.flask import FlaskIntegration
 
 from .settings import settings
 
@@ -16,13 +14,17 @@ USER_ID = "user_id"
 MOVIE_ID = "movie_id"
 TIMESTAMP = "ts"
 
-sentry_sdk.init(
-    dsn=settings.sentry_dsn,
-    integrations=[
-        FlaskIntegration(),
-    ],
-    traces_sample_rate=1.0,
-)
+if settings.sentry_dsn:
+    import sentry_sdk
+    from sentry_sdk.integrations.flask import FlaskIntegration
+
+    sentry_sdk.init(
+        dsn=settings.sentry_dsn,
+        integrations=[
+            FlaskIntegration(),
+        ],
+        traces_sample_rate=1.0,
+    )
 
 app = Flask(__name__)
 logger = logging.getLogger(settings.logger_name)
