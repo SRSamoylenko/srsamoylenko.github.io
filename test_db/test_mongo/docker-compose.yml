@@ -8,7 +8,6 @@ services:
       - MONGO_INITDB_ROOT_USERNAME
       - MONGO_INITDB_ROOT_PASSWORD
     ports:
-      - "8081:8081"
       - "27017:27017"
     deploy:
       resources:
@@ -18,3 +17,11 @@ services:
         reservations:
           cpus: '4'
           memory: 4G
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://$MONGO_INITDB_ROOT_USERNAME:$MONGO_INITDB_ROOT_PASSWORD@mongo:27017/
