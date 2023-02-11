@@ -59,14 +59,16 @@ def generate_estimations(db, items_count, batch_size, user_ids, movie_ids):
         [("movie_id", pymongo.DESCENDING), ("estimation", pymongo.DESCENDING)]
     )
 
-    def gen_item():
-        return {
+    insert_batches(
+        estimations,
+        lambda: {
             "user_id": random.choice(user_ids),
             "movie_id": random.choice(movie_ids),
             "estimation": random.randint(0, 10),
-        }
-
-    insert_batches(estimations, gen_item, items_count, batch_size)
+        },
+        items_count,
+        batch_size,
+    )
 
 
 def generate_postponed(db, items_count, batch_size, user_ids, movie_ids):
@@ -79,7 +81,15 @@ def generate_postponed(db, items_count, batch_size, user_ids, movie_ids):
             "movie_id": random.choice(movie_ids),
         }
 
-    insert_batches(postponed, gen_item, items_count, batch_size)
+    insert_batches(
+        postponed,
+        lambda: {
+            "user_id": random.choice(user_ids),
+            "movie_id": random.choice(movie_ids),
+        },
+        items_count,
+        batch_size,
+    )
 
 
 def insert_batches(collection, item_generator, items_count, batch_size):
