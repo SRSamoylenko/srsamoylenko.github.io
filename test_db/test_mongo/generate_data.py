@@ -85,8 +85,8 @@ def generate_postponed(db, items_count, batch_size, user_ids, movie_ids):
 def insert_batches(collection, item_generator, items_count, batch_size):
 
     batches = items_count // batch_size * [batch_size]  # get full batches
-    if reminder := items_count % batch_size:
-        batches.append(reminder)  # add reminder items
+    if items_count % batch_size:
+        batches.append(items_count % batch_size)  # add reminder items
 
     for size in tqdm.tqdm(batches):
         collection.insert_many([item_generator() for _ in range(size)])
