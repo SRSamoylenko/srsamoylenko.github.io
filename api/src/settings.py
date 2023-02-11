@@ -11,6 +11,7 @@ class Settings(BaseSettings):
 
     logger_name = "ugc"
     sentry_dsn: str = Field("", env="SENTRY_DSN")
+    sentry_traces_sample_rate: float = Field(0.0, env="SENTRY_TRACES_SAMPLE_RATE")
 
 
 settings = Settings()
