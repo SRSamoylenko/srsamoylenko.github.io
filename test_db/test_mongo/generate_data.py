@@ -94,8 +94,6 @@ def insert_batches(collection, item_generator, items_count, batch_size):
 
 if __name__ == "__main__":
     args = get_args()
-    # я знаю что можно сделать класс и не передавать переменные туда-сюда :)
-    # и поаккуратней сделать работу с параметрами
     user_ids, movie_ids = create_ids(args.users, args.movies)
     db = get_db()
     generate_estimations(db, args.estimations, args.batch_size, user_ids, movie_ids)
