@@ -37,7 +37,6 @@ def get_args() -> argparse.Namespace:
 def create_ids(user_count, movie_count):
     user_ids = [str(uuid4()) for _ in range(user_count)]
     movie_ids = [str(uuid4()) for _ in range(movie_count)]
-    write_ids(user_ids, movie_ids)
     return user_ids, movie_ids
 
 
@@ -105,6 +104,7 @@ def insert_batches(collection, item_generator, items_count, batch_size):
 if __name__ == "__main__":
     args = get_args()
     user_ids, movie_ids = create_ids(args.users, args.movies)
+    write_ids(user_ids, movie_ids)
     db = get_db()
     generate_estimations(db, args.estimations, args.batch_size, user_ids, movie_ids)
     generate_postponed(db, args.postponed, args.batch_size, user_ids, movie_ids)
